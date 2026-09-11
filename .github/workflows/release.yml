@@ -1,0 +1,39 @@
+name: Release
+
+# Builds the macOS/Windows/Linux app whenever a version tag (v1.0.0 etc.) is
+# pushed, and attaches the installers to a GitHub Release. Builds are
+# unsigned (no paid Apple/Windows certificate) — macOS users need to
+# right-click → Open (or `xattr -cr`) the first time, see README.
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run dist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.dmg
+            dist/*.zip
+            dist/*.exe
+            dist/*.AppImage
+          fail_on_unmatched_files: false

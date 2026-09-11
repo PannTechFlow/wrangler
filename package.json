@@ -1,0 +1,68 @@
+{
+  "name": "agent-wrangler",
+  "version": "0.1.0",
+  "description": "Whip your terminal into shape, or pat it on the shoulder.",
+  "license": "MIT",
+  "private": true,
+  "main": "main.js",
+  "bin": {
+    "agentwrangler": "bin/wrangler.js"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "dist": "electron-builder --mac --win --linux"
+  },
+  "dependencies": {
+    "koffi": "^2.9.0"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.agentwrangler.app",
+    "productName": "Wrangler",
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "renderer/**/*",
+      "icon/**/*",
+      "sounds/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "identity": null,
+      "icon": "icon/AppIcon.icns",
+      "target": [
+        { "target": "dmg", "arch": ["x64", "arm64"] },
+        { "target": "zip", "arch": ["x64", "arm64"] }
+      ]
+    },
+    "win": {
+      "icon": "icon/icon.ico",
+      "target": [{ "target": "nsis", "arch": ["x64"] }]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "linux": {
+      "icon": "icon/Template.png",
+      "category": "Utility",
+      "target": [{ "target": "AppImage", "arch": ["x64"] }]
+    }
+  }
+}
