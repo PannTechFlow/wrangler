@@ -12,6 +12,11 @@ CLI agent) most of the time. Wire up the hooks below and the whip can
 auto-spawn on its own once a prompt's been running slow enough, so you don't
 even have to reach for the tray.
 
+<p>
+  <img src="docs/screenshot-whip.png" alt="A struck whip mid-crack, sparks and shockwave ring around the tip, phrase banner reading Compile or perish" width="49%">
+  <img src="docs/screenshot-pat.png" alt="Pat mode: a hand with floating hearts and sparkles after a pat, pat counter in the corner" width="49%">
+</p>
+
 ## Features
 
 - **Physics-based whip** — a 36-link verlet-simulated rope with real bend
