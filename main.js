@@ -6,6 +6,7 @@ const os = require('os');
 
 const { sendText, refocusPreviousApp } = require('./src/keystroke');
 const { randomWhipPhrase, randomKindPhrase } = require('./src/phrases');
+const { loadConfig, saveConfig } = require('./src/config');
 
 const TOGGLE_SHORTCUT = 'Alt+Shift+W';
 const PAT_SHORTCUT = 'Alt+Shift+P';
@@ -13,11 +14,12 @@ const PAT_SHORTCUT = 'Alt+Shift+P';
 // Claude Code hooks (see ~/.claude/settings.json) write busy/idle status here;
 // we poll it to auto-spawn the whip when a prompt has been running too long.
 const CLAUDE_STATUS_FILE = path.join(os.homedir(), '.agent-wrangler', 'claude-status.json');
-const SLOW_THRESHOLD_MS = Number(process.env.WRANGLER_SLOW_THRESHOLD_MS) || 20000;
-// Kill switch for dev/testing: launching the real app auto-spawns a real,
-// screen-covering overlay that captures real clicks and sends real Ctrl-C +
-// keystrokes to whatever's focused. Set this when iterating on the app itself.
-const AUTO_TRIGGER_DISABLED = process.env.WRANGLER_DISABLE_AUTOTRIGGER === '1';
+// autoTrigger / slowThresholdMs — editable from the tray menu, saved to
+// ~/.agent-wrangler/config.json. WRANGLER_DISABLE_AUTOTRIGGER=1 is the kill
+// switch for dev/testing: the auto-spawned overlay captures real clicks and
+// sends real Ctrl-C + keystrokes to whatever's focused.
+const config = loadConfig();
+const THRESHOLD_CHOICES_MS = [10000, 20000, 30000, 60000, 120000];
 let autoTriggeredForThisBusySpan = false;
 
 let tray = null;
@@ -190,9 +192,9 @@ function pollClaudeStatus() {
       autoTriggeredForThisBusySpan = false;
       return;
     }
-    if (AUTO_TRIGGER_DISABLED) return;
+    if (!config.autoTrigger) return;
     if (autoTriggeredForThisBusySpan) return;
-    if (Date.now() - since < SLOW_THRESHOLD_MS) return;
+    if (Date.now() - since < config.slowThresholdMs) return;
     autoTriggeredForThisBusySpan = true;
     if (!(overlay && overlay.isVisible())) showOverlay('whip', false, { fromLeft: true });
   });
@@ -223,6 +225,50 @@ ipcMain.on('hand-pat', () => {
   }
 });
 
+// ── Tray menu ────────────────────────────────────────────────────────────────
+
+function setConfig(changes) {
+  Object.assign(config, changes);
+  saveConfig(changes);
+}
+
+/** Rebuilt on every open so checkmarks reflect the current config. */
+function buildTrayMenu() {
+  const openAtLogin = app.getLoginItemSettings().openAtLogin;
+  return Menu.buildFromTemplate([
+    { label: `Whip (${TOGGLE_SHORTCUT})`, click: () => toggleOverlay(true, 'whip') },
+    { label: `Pat on the shoulder (${PAT_SHORTCUT})`, click: () => toggleOverlay(true, 'pat') },
+    { type: 'separator' },
+    {
+      label: 'Auto-whip slow agents',
+      type: 'checkbox',
+      checked: config.autoTrigger,
+      click: (item) => setConfig({ autoTrigger: item.checked }),
+    },
+    {
+      label: 'Slow after',
+      enabled: config.autoTrigger,
+      submenu: THRESHOLD_CHOICES_MS.map((ms) => ({
+        label: ms < 60000 ? `${ms / 1000} seconds` : `${ms / 60000} minute${ms > 60000 ? 's' : ''}`,
+        type: 'radio',
+        checked: config.slowThresholdMs === ms,
+        click: () => setConfig({ slowThresholdMs: ms }),
+      })),
+    },
+    {
+      label: 'Open at login',
+      type: 'checkbox',
+      checked: openAtLogin,
+      // Only installer builds: a from-source launch would register the bare
+      // Electron binary, which reopens without our app path. Linux unsupported.
+      visible: app.isPackaged && process.platform !== 'linux',
+      click: (item) => app.setLoginItemSettings({ openAtLogin: item.checked }),
+    },
+    { type: 'separator' },
+    { label: 'Quit', click: () => app.quit() },
+  ]);
+}
+
 // ── App lifecycle ────────────────────────────────────────────────────────────
 
 if (!app.requestSingleInstanceLock()) {
@@ -249,11 +295,6 @@ app.whenReady().then(async () => {
   defaultTooltip = `Wrangler — ${hint}; right-click for more, scroll on the overlay to switch whip/pat`;
   tray.setToolTip(defaultTooltip);
 
-  const modeMenuItems = [
-    { label: `Whip (${TOGGLE_SHORTCUT})`, click: () => toggleOverlay(true, 'whip') },
-    { label: `Pat on the shoulder (${PAT_SHORTCUT})`, click: () => toggleOverlay(true, 'pat') },
-  ];
-  const trayMenu = Menu.buildFromTemplate([...modeMenuItems, { type: 'separator' }, { label: 'Quit', click: () => app.quit() }]);
 
   if (process.platform === 'darwin') {
     // Press-and-hold: the whip appears already attached to the cursor on
@@ -263,7 +304,7 @@ app.whenReady().then(async () => {
   } else {
     tray.on('click', () => toggleOverlay(true));
   }
-  tray.on('right-click', () => tray.popUpContextMenu(trayMenu));
+  tray.on('right-click', () => tray.popUpContextMenu(buildTrayMenu()));
 
   if (!globalShortcut.register(TOGGLE_SHORTCUT, () => toggleOverlay(false, 'whip'))) {
     console.warn(`wrangler: could not register shortcut ${TOGGLE_SHORTCUT}`);
