@@ -4,6 +4,21 @@
 const path = require('path');
 const { spawn } = require('child_process');
 
+const command = process.argv[2];
+if (command === 'install-hooks' || command === 'uninstall-hooks') {
+  const { installHooks, uninstallHooks } = require('../src/hooks');
+  try {
+    const file = command === 'install-hooks' ? installHooks() : uninstallHooks();
+    const verb = command === 'install-hooks' ? 'Added' : 'Removed';
+    console.log(`${verb} Wrangler's Claude Code hooks in ${file} (backup: ${file}.wrangler-backup)`);
+    if (command === 'install-hooks') console.log('Restart any running Claude Code sessions to pick them up.');
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+  process.exit(0);
+}
+
 let electronBinary;
 try {
   electronBinary = require('electron');

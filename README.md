@@ -149,8 +149,15 @@ reads `{"status":"busy","since":<ms epoch>}` and that timestamp is older than
 the slow threshold, the whip auto-spawns (sliding in from off-screen) without
 you touching the tray.
 
-Point any agent's lifecycle hooks at that file. For Claude Code, add this to
-`~/.claude/settings.json`:
+Point any agent's lifecycle hooks at that file. For Claude Code, one command
+does it (it merges into your existing settings, keeps a backup, and is safe to
+re-run):
+
+```bash
+agentwrangler install-hooks     # agentwrangler uninstall-hooks to remove
+```
+
+Or add this to `~/.claude/settings.json` by hand:
 
 ```json
 {
@@ -181,12 +188,21 @@ only — Windows keeps its standard icon.)
 
 ### Configuration
 
-Environment variables, set before launching:
+Right-click the tray icon:
+
+- **Auto-whip slow agents** — turn the auto-spawn on/off (the tray status
+  badge keeps working either way).
+- **Slow after** — how long a prompt must be running before the whip
+  auto-spawns: 10s, 20s (default), 30s, 1 min or 2 min.
+- **Open at login** — installer builds on macOS/Windows.
+
+Choices are saved to `~/.agent-wrangler/config.json`. Environment variables,
+if set when launching, override the saved values:
 
 | Variable | Default | Effect |
 |---|---|---|
 | `WRANGLER_SLOW_THRESHOLD_MS` | `20000` | How long the status file must read "busy" before the whip auto-spawns |
-| `WRANGLER_DISABLE_AUTOTRIGGER` | unset | Set to `1` to disable the auto-spawn entirely (tray status badge still works) — useful while developing/testing Wrangler itself, since the auto-spawned overlay captures real clicks on your real screen |
+| `WRANGLER_DISABLE_AUTOTRIGGER` | unset | Set to `1` to disable the auto-spawn entirely — useful while developing/testing Wrangler itself, since the auto-spawned overlay captures real clicks on your real screen |
 
 ## macOS setup
 
@@ -214,7 +230,8 @@ rather than your terminal.
 - **Auto-trigger never fires** — confirm `~/.agent-wrangler/claude-status.json`
   is actually being written (your hook command may need `mkdir -p` first,
   see [Auto-trigger setup](#auto-trigger-setup)), and that
-  `WRANGLER_DISABLE_AUTOTRIGGER` isn't set to `1`.
+  **Auto-whip slow agents** is checked in the tray menu (and
+  `WRANGLER_DISABLE_AUTOTRIGGER` isn't set to `1`).
 
 ## Project layout
 
@@ -224,6 +241,8 @@ preload.js            contextBridge between main and the overlay renderer
 src/
   keystroke.js         Cross-platform Ctrl-C + type-text automation
   phrases.js            Whip / kind-word phrase lists
+  config.js             Tray-menu settings, saved to ~/.agent-wrangler/config.json
+  hooks.js              `agentwrangler install-hooks` / `uninstall-hooks`
   mac-app.js             Builds the Wrangler.app wrapper on macOS
 bin/wrangler.js       CLI launcher
 renderer/
