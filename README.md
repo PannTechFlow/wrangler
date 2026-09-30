@@ -43,32 +43,81 @@ even have to reach for the tray.
 
 ## Install
 
-**Download, no cloning or Node required:** grab the installer for your OS
-from the [Releases](../../releases) page — a `.dmg` for macOS, `.exe` for
-Windows, `.AppImage` for Linux.
+### Download (easiest — no Node needed)
 
-These builds are unsigned (no paid developer certificate), so on first
-launch:
+Grab the file for your computer from the
+[latest release](https://github.com/PannTechFlow/wrangler/releases/latest):
 
-- **macOS:** Gatekeeper will block it — right-click the app → **Open**, or run
-  `xattr -cr /Applications/Wrangler.app`.
-- **Windows:** SmartScreen will warn — click **More info** → **Run anyway**.
+| Your computer | Download |
+|---|---|
+| Mac with Apple Silicon (M1/M2/M3/M4…) | `Wrangler-<version>-arm64.dmg` |
+| Mac with Intel | `Wrangler-<version>.dmg` |
+| Windows | `Wrangler.Setup.<version>.exe` |
+| Linux | `Wrangler-<version>.AppImage` |
 
-Linux also needs `xdotool` for keyboard automation: `sudo apt install xdotool`.
+Not sure which Mac you have? Apple menu  → **About This Mac**: "Chip: Apple M…" means
+Apple Silicon, "Processor: Intel…" means Intel.
+
+The builds aren't signed with a paid developer certificate, so your OS will
+warn you the first time. That's expected — here's how to get past it:
+
+**macOS**
+
+1. Open the `.dmg` and drag **Wrangler** into **Applications**.
+2. Opening it will say *"Wrangler is damaged and can't be opened."* It isn't —
+   click **Cancel** (not Move to Trash), then run this once in Terminal:
+   ```bash
+   xattr -cr /Applications/Wrangler.app
+   ```
+3. Open Wrangler again. No window appears — look for the whip icon in the
+   menu bar at the top of your screen.
+4. The first time you strike, macOS asks for Accessibility access: enable
+   **Wrangler** under **System Settings → Privacy & Security →
+   Accessibility**. Without this the whip cracks but can't type anything.
+
+**Windows**
+
+Run the `.exe`. If SmartScreen warns, click **More info** → **Run anyway**.
+The whip icon lives in the system tray (bottom right, may be under the `^`).
+
+**Linux**
+
+```bash
+sudo apt install xdotool          # needed to send keystrokes
+chmod +x Wrangler-*.AppImage
+./Wrangler-*.AppImage
+```
 
 ### From source
 
+Needs [Node.js](https://nodejs.org) 18+.
+
 ```bash
+git clone https://github.com/PannTechFlow/wrangler.git
+cd wrangler
 npm install
 npm start
 ```
 
-Or install the `agentwrangler` command globally from this folder:
+Or install the `agentwrangler` command globally, which also gives you
+`agentwrangler install-hooks` (see [Auto-trigger setup](#auto-trigger-setup)):
 
 ```bash
 npm install -g .
 agentwrangler
 ```
+
+### Quick start
+
+Once it's running:
+
+1. Click into your terminal running Claude Code (or any CLI agent).
+2. **macOS:** press and hold the menu-bar icon · **Windows/Linux:** click the
+   tray icon · anywhere: `Alt+Shift+W`.
+3. Flick the mouse fast to crack the whip, then **click right after the
+   crack** — that sends `Ctrl-C` plus a phrase to your terminal.
+4. Right-click to put it away. Right-click the tray icon for pat mode and
+   settings.
 
 ### Building your own installer
 
@@ -149,7 +198,8 @@ reads `{"status":"busy","since":<ms epoch>}` and that timestamp is older than
 the slow threshold, the whip auto-spawns (sliding in from off-screen) without
 you touching the tray.
 
-Point any agent's lifecycle hooks at that file. For Claude Code, one command
+Point any agent's lifecycle hooks at that file. For Claude Code, if you
+installed [from source](#from-source) with `npm install -g .`, one command
 does it (it merges into your existing settings, keeps a backup, and is safe to
 re-run):
 
@@ -157,7 +207,9 @@ re-run):
 agentwrangler install-hooks     # agentwrangler uninstall-hooks to remove
 ```
 
-Or add this to `~/.claude/settings.json` by hand:
+Installed from a download instead? Add this to `~/.claude/settings.json` by
+hand (merge it in if you already have a `"hooks"` section), then restart
+Claude Code:
 
 ```json
 {
@@ -222,7 +274,11 @@ rather than your terminal.
   [How it works](#how-it-works) — you need to click within the window, not
   just flick fast.
 - **macOS says the app is damaged / can't be opened** — it's unsigned, not
-  actually damaged. Right-click → Open, or `xattr -cr /Applications/Wrangler.app`.
+  actually damaged. Click **Cancel**, run
+  `xattr -cr /Applications/Wrangler.app`, then open it again.
+- **I opened it but nothing appeared** — that's normal: Wrangler has no
+  window. Look for the whip icon in the menu bar (macOS) or system tray
+  (Windows/Linux).
 - **Keystrokes never reach my terminal (macOS)** — check **System Settings →
   Privacy & Security → Accessibility** and make sure Wrangler is enabled.
 - **Keystrokes never reach my terminal (Linux)** — install `xdotool`
