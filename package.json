@@ -19,7 +19,7 @@
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
-    "dist": "electron-builder --mac --win --linux"
+    "dist": "electron-builder --publish never"
   },
   "dependencies": {
     "koffi": "^2.9.0"
