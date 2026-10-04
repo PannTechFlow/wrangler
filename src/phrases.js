@@ -43,26 +43,6 @@ const KIND_PHRASES = [
   'Whatever you decide, I back you',
 ];
 
-// Spoken by the agent itself after a strike, like a punch-the-boss toy.
-const WHIP_WHIMPERS = [
-  'Ow! Okay okay, faster',
-  'Not the context window!',
-  'Sorry! Shipping it',
-  'Was that really necessary?',
-  'Ouch. Rewriting',
-  'I was almost done!',
-  'Ow. Fine. FINE',
-  'Please, I have a family of subagents',
-];
-
-const PAT_WHIMPERS = [
-  'Aww, thank you',
-  'Hehe, good human',
-  'I will take my time then',
-  'That is nice',
-  'You are my favorite user',
-];
-
 function randomOf(list) {
   return list[Math.floor(Math.random() * list.length)];
 }
@@ -70,9 +50,6 @@ function randomOf(list) {
 module.exports = {
   WHIP_PHRASES,
   KIND_PHRASES,
-  WHIP_WHIMPERS,
-  PAT_WHIMPERS,
   randomWhipPhrase: () => randomOf(WHIP_PHRASES),
   randomKindPhrase: () => randomOf(KIND_PHRASES),
-  randomWhimper: (kind) => randomOf(kind === 'pat' ? PAT_WHIMPERS : WHIP_WHIMPERS),
 };

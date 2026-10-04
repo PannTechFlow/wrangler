@@ -12,5 +12,5 @@ contextBridge.exposeInMainWorld('bridge', {
   onSpawnHand: (fn) => ipcRenderer.on('spawn-hand', () => fn()),
   onDropWhip: (fn) => ipcRenderer.on('drop-whip', () => fn()),
   onCrackPhrase: (fn) => ipcRenderer.on('crack-phrase', (_e, text, kind) => fn(text, kind)),
-  onWhimper: (fn) => ipcRenderer.on('whimper', (_e, whimper) => fn(whimper)),
+  onWhimper: (fn) => ipcRenderer.on('whimper', (_e, clip) => fn(clip)),
 });

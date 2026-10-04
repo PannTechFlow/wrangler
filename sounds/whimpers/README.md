@@ -1,22 +1,24 @@
 # Whimper clips
 
-Audio played when the whip hits the agent, like a punch-the-boss toy. Each
-hit plays one clip, then the agent whispers a line.
+Played when the whip hits the agent, like a punch-the-boss toy. Each hit
+plays one clip from this folder.
 
-Name clips by intensity (`.mp3`, `.wav`, `.m4a` or `.ogg`):
+Clips are named by intensity (`.mp3`, `.wav`, `.m4a` or `.ogg`):
 
-| Prefix | Plays on | Example |
+| Prefix | Plays on | Volume |
 |---|---|---|
-| `1-` | first hit | `1-ow-quiet.m4a` — a whispered "ow…" |
-| `2-` | second quick hit | `2-yelp.m4a` — "OW! hey!" |
-| `3-` | third+ quick hit | `3-scream.m4a` — full scream |
+| `1-` | first hit | 50% |
+| `2-` | second quick hit | 80% |
+| `3-` | third+ quick hit | 100% |
 
 Hits less than 2.5 s apart escalate; pause and it calms back down to `1-`.
 A missing level falls back to the next quieter one. Clips are picked up
-without restarting.
+without restarting, so you can add your own recordings (e.g. a begged
+"please, mercy!") alongside or instead of these.
 
-No recordings yet? On macOS, `./scripts/make-whimpers.sh` generates a
-placeholder set with the built-in voices (Whisper → Junior/Albert screams).
-Everything in this folder except this README is gitignored.
+## Credits
 
-Only add recordings you made yourself or that are licensed for redistribution.
+The bundled `*-ugh-*.m4a` clips are
+["15 vocal male strain/hurt/pain/jump sounds"](https://opengameart.org/content/15-vocal-male-strainhurtpainjump-sounds)
+by qubodup, released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/),
+re-encoded to AAC and sorted by loudness.

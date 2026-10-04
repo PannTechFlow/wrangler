@@ -128,37 +128,21 @@ function playCrackSound() {
   new Audio(src).play().catch(() => {});
 }
 
-// The agent's reaction to a hit: a recorded clip from sounds/whimpers/ (if
-// any), then a line whispered via TTS (macOS "Whisper" voice when present).
-// A new hit cuts off whatever reaction is still playing.
-window.speechSynthesis?.getVoices(); // voices load lazily; warm the list up
+// The agent's reaction to a hit: a human pain clip from sounds/whimpers/,
+// quieter at level 1-, full volume at 3-. A new hit cuts off the last one.
+const WHIMPER_VOLUME = { 1: 0.5, 2: 0.8, 3: 1 };
 let whimperClip = null;
 let whimperTimer = null;
 
-function speakLine(text) {
-  if (!text || !window.speechSynthesis) return;
-  const u = new SpeechSynthesisUtterance(text);
-  u.voice = speechSynthesis.getVoices().find((v) => /whisper/i.test(v.name)) || null;
-  u.volume = 0.7;
-  u.rate = 1.1;
-  u.pitch = u.voice ? 1 : 0.8;
-  speechSynthesis.speak(u);
-}
-
-function playWhimper(whimper) {
+function playWhimper(clip) {
   clearTimeout(whimperTimer);
   whimperClip?.pause();
-  whimperClip = null;
-  window.speechSynthesis?.cancel();
-  if (!whimper) return;
-
+  const level = (clip.match(/\/([123])-[^/]*$/) || [])[1];
   // Short delay so the crack lands first.
   whimperTimer = setTimeout(() => {
-    if (!whimper.clip) return speakLine(whimper.line);
-    const clip = new Audio(whimper.clip);
-    whimperClip = clip;
-    clip.onended = () => { if (whimperClip === clip) speakLine(whimper.line); };
-    clip.play().catch(() => speakLine(whimper.line));
+    whimperClip = new Audio(clip);
+    whimperClip.volume = WHIMPER_VOLUME[level] ?? 1;
+    whimperClip.play().catch(() => {});
   }, 120);
 }
 

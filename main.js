@@ -5,7 +5,7 @@ const fs = require('fs');
 const os = require('os');
 
 const { sendText, refocusPreviousApp } = require('./src/keystroke');
-const { randomWhipPhrase, randomKindPhrase, randomWhimper } = require('./src/phrases');
+const { randomWhipPhrase, randomKindPhrase } = require('./src/phrases');
 const { nextHitClip } = require('./src/whimpers');
 const { loadConfig, saveConfig } = require('./src/config');
 
@@ -207,13 +207,10 @@ ipcMain.on('hide-overlay', () => overlay?.hide());
 ipcMain.on('mode-changed', (_e, mode) => { lastKind = mode === 'pat' ? 'pat' : 'whip'; });
 
 // Every crack is a hit the agent reacts to, even ones that send no keystrokes.
-function sendWhimper(kind) {
-  if (!config.voice) return;
-  const clip = kind === 'whip' ? nextHitClip() : null;
-  overlay?.webContents.send('whimper', { line: randomWhimper(kind), clip });
-}
-
-ipcMain.on('whip-hit', () => sendWhimper('whip'));
+ipcMain.on('whip-hit', () => {
+  const clip = config.voice ? nextHitClip() : null;
+  if (clip) overlay?.webContents.send('whimper', clip);
+});
 
 ipcMain.on('whip-crack', () => {
   const phrase = randomWhipPhrase();
@@ -228,7 +225,6 @@ ipcMain.on('whip-crack', () => {
 ipcMain.on('hand-pat', () => {
   const phrase = randomKindPhrase();
   overlay?.webContents.send('crack-phrase', phrase, 'pat');
-  sendWhimper('pat');
   try {
     sendText(phrase, { interrupt: false });
   } catch (err) {

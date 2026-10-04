@@ -246,15 +246,11 @@ Right-click the tray icon:
   badge keeps working either way).
 - **Slow after** — how long a prompt must be running before the whip
   auto-spawns: 10s, 20s (default), 30s, 1 min or 2 min.
-- **Agent whimpers** — after each strike or pat the agent mutters a reaction
-  out loud ("Not the context window!"), punch-the-boss-toy style. Uses the
-  system's text-to-speech (macOS's "Whisper" voice when installed). Drop
-  your own scream/yelp recordings into `sounds/whimpers/` and each whip hit
-  plays one first, escalating with rapid hits — see
-  [sounds/whimpers/README.md](sounds/whimpers/README.md). On macOS,
-  `./scripts/make-whimpers.sh` generates a placeholder set. On by default;
+- **Agent whimpers** — each whip crack makes the agent yelp, punch-the-boss
+  toy style: a quiet "ugh" at first, escalating to a full scream on rapid
+  hits. Real human recordings (CC0), and you can drop in your own — see
+  [sounds/whimpers/README.md](sounds/whimpers/README.md). On by default;
   untick it before screen-sharing.
-- **Open at login** — installer builds on macOS/Windows.
 
 Choices are saved to `~/.agent-wrangler/config.json`. Environment variables,
 if set when launching, override the saved values:
