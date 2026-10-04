@@ -15,4 +15,8 @@ Hits less than 2.5 s apart escalate; pause and it calms back down to `1-`.
 A missing level falls back to the next quieter one. Clips are picked up
 without restarting.
 
+No recordings yet? On macOS, `./scripts/make-whimpers.sh` generates a
+placeholder set with the built-in voices (Whisper → Junior/Albert screams).
+Everything in this folder except this README is gitignored.
+
 Only add recordings you made yourself or that are licensed for redistribution.

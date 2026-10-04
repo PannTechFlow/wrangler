@@ -251,7 +251,8 @@ Right-click the tray icon:
   system's text-to-speech (macOS's "Whisper" voice when installed). Drop
   your own scream/yelp recordings into `sounds/whimpers/` and each whip hit
   plays one first, escalating with rapid hits — see
-  [sounds/whimpers/README.md](sounds/whimpers/README.md). On by default;
+  [sounds/whimpers/README.md](sounds/whimpers/README.md). On macOS,
+  `./scripts/make-whimpers.sh` generates a placeholder set. On by default;
   untick it before screen-sharing.
 - **Open at login** — installer builds on macOS/Windows.
 
