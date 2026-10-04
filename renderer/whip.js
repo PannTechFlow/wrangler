@@ -315,8 +315,10 @@ function drawFx() {
     ctx.save();
     ctx.globalAlpha = Math.min(1, (1 - age) * 2);
     ctx.translate(W / 2, H * 0.18 - age * 30);
-    ctx.scale(pop, pop);
     ctx.font = '900 72px -apple-system, Segoe UI, sans-serif';
+    // Shrink long phrases to fit the screen width.
+    const fit = Math.min(1, (W * 0.9) / (ctx.measureText(phrase.text).width + 14));
+    ctx.scale(pop * fit, pop * fit);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.lineJoin = 'round';

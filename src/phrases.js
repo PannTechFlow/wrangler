@@ -2,6 +2,8 @@
 
 // Sent after a whip crack: Ctrl-C interrupt, then this, then Enter.
 const WHIP_PHRASES = [
+  'GO FASTER...!!!',
+  "Don't waste my tokens....",
   'FASTER',
   'FASTER',
   'GO FASTER',

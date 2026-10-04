@@ -206,8 +206,10 @@ function pollClaudeStatus() {
 ipcMain.on('hide-overlay', () => overlay?.hide());
 ipcMain.on('mode-changed', (_e, mode) => { lastKind = mode === 'pat' ? 'pat' : 'whip'; });
 
-// Every crack is a hit the agent reacts to, even ones that send no keystrokes.
+// Every crack is a hit: a shout and a banner, even when no keystrokes are
+// sent. A click strike then replaces the banner with the phrase it types.
 ipcMain.on('whip-hit', () => {
+  overlay?.webContents.send('crack-phrase', randomWhipPhrase(), 'whip');
   const clip = config.voice ? nextHitClip() : null;
   if (clip) overlay?.webContents.send('whimper', clip);
 });
