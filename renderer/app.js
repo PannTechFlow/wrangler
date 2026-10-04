@@ -70,7 +70,7 @@ window.bridge.onDropWhip(() => {
 });
 window.bridge.onCrackPhrase((text, kind, whimper) => {
   phrase = { text, kind: kind || 'whip', t: Date.now() };
-  speakWhimper(whimper);
+  playWhimper(whimper);
 });
 
 // ── Update / draw ───────────────────────────────────────────────────────

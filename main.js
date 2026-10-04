@@ -6,6 +6,7 @@ const os = require('os');
 
 const { sendText, refocusPreviousApp } = require('./src/keystroke');
 const { randomWhipPhrase, randomKindPhrase, randomWhimper } = require('./src/phrases');
+const { nextHitClip } = require('./src/whimpers');
 const { loadConfig, saveConfig } = require('./src/config');
 
 const TOGGLE_SHORTCUT = 'Alt+Shift+W';
@@ -207,7 +208,8 @@ ipcMain.on('mode-changed', (_e, mode) => { lastKind = mode === 'pat' ? 'pat' : '
 
 ipcMain.on('whip-crack', () => {
   const phrase = randomWhipPhrase();
-  overlay?.webContents.send('crack-phrase', phrase, 'whip', config.voice ? randomWhimper('whip') : null);
+  const whimper = config.voice ? { line: randomWhimper('whip'), clip: nextHitClip() } : null;
+  overlay?.webContents.send('crack-phrase', phrase, 'whip', whimper);
   try {
     sendText(phrase, { interrupt: true });
   } catch (err) {
@@ -217,7 +219,8 @@ ipcMain.on('whip-crack', () => {
 
 ipcMain.on('hand-pat', () => {
   const phrase = randomKindPhrase();
-  overlay?.webContents.send('crack-phrase', phrase, 'pat', config.voice ? randomWhimper('pat') : null);
+  const whimper = config.voice ? { line: randomWhimper('pat'), clip: null } : null;
+  overlay?.webContents.send('crack-phrase', phrase, 'pat', whimper);
   try {
     sendText(phrase, { interrupt: false });
   } catch (err) {

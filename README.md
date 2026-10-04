@@ -248,8 +248,11 @@ Right-click the tray icon:
   auto-spawns: 10s, 20s (default), 30s, 1 min or 2 min.
 - **Agent whimpers** — after each strike or pat the agent mutters a reaction
   out loud ("Not the context window!"), punch-the-boss-toy style. Uses the
-  system's text-to-speech (macOS's "Whisper" voice when installed). On by
-  default; untick it before screen-sharing.
+  system's text-to-speech (macOS's "Whisper" voice when installed). Drop
+  your own scream/yelp recordings into `sounds/whimpers/` and each whip hit
+  plays one first, escalating with rapid hits — see
+  [sounds/whimpers/README.md](sounds/whimpers/README.md). On by default;
+  untick it before screen-sharing.
 - **Open at login** — installer builds on macOS/Windows.
 
 Choices are saved to `~/.agent-wrangler/config.json`. Environment variables,
@@ -302,6 +305,7 @@ src/
   keystroke.js         Cross-platform Ctrl-C + type-text automation
   phrases.js            Whip / kind-word phrase lists
   config.js             Tray-menu settings, saved to ~/.agent-wrangler/config.json
+  whimpers.js           Picks a hit-reaction clip from sounds/whimpers/, escalating
   hooks.js              `agentwrangler install-hooks` / `uninstall-hooks`
   mac-app.js             Builds the Wrangler.app wrapper on macOS
 bin/wrangler.js       CLI launcher

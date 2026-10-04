@@ -128,20 +128,38 @@ function playCrackSound() {
   new Audio(src).play().catch(() => {});
 }
 
-// The agent's reaction, in a whisper where the OS has one (macOS "Whisper").
-// Delayed so the crack lands first; cancels any line still playing.
+// The agent's reaction to a hit: a recorded clip from sounds/whimpers/ (if
+// any), then a line whispered via TTS (macOS "Whisper" voice when present).
+// A new hit cuts off whatever reaction is still playing.
 window.speechSynthesis?.getVoices(); // voices load lazily; warm the list up
-function speakWhimper(text) {
+let whimperClip = null;
+let whimperTimer = null;
+
+function speakLine(text) {
   if (!text || !window.speechSynthesis) return;
-  setTimeout(() => {
-    const u = new SpeechSynthesisUtterance(text);
-    u.voice = speechSynthesis.getVoices().find((v) => /whisper/i.test(v.name)) || null;
-    u.volume = 0.7;
-    u.rate = 1.1;
-    u.pitch = u.voice ? 1 : 0.8;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
-  }, 150);
+  const u = new SpeechSynthesisUtterance(text);
+  u.voice = speechSynthesis.getVoices().find((v) => /whisper/i.test(v.name)) || null;
+  u.volume = 0.7;
+  u.rate = 1.1;
+  u.pitch = u.voice ? 1 : 0.8;
+  speechSynthesis.speak(u);
+}
+
+function playWhimper(whimper) {
+  clearTimeout(whimperTimer);
+  whimperClip?.pause();
+  whimperClip = null;
+  window.speechSynthesis?.cancel();
+  if (!whimper) return;
+
+  // Short delay so the crack lands first.
+  whimperTimer = setTimeout(() => {
+    if (!whimper.clip) return speakLine(whimper.line);
+    const clip = new Audio(whimper.clip);
+    whimperClip = clip;
+    clip.onended = () => { if (whimperClip === clip) speakLine(whimper.line); };
+    clip.play().catch(() => speakLine(whimper.line));
+  }, 120);
 }
 
 // ══════════════════════════════════════════════════════════════════════════
