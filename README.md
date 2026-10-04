@@ -338,6 +338,7 @@ or share ideas and setups in
 
 Built by **Pann**. Follow along for more dev-tool experiments:
 
+- LinkedIn: [Pann Sreyoun](https://www.linkedin.com/in/pann-sreyoun/)
 - TikTok: [@codewithpann](https://www.tiktok.com/@codewithpann)
 - GitHub: [@PannTechFlow](https://github.com/PannTechFlow)
 
