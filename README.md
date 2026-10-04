@@ -246,11 +246,10 @@ Right-click the tray icon:
   badge keeps working either way).
 - **Slow after** — how long a prompt must be running before the whip
   auto-spawns: 10s, 20s (default), 30s, 1 min or 2 min.
-- **Agent whimpers** — each whip crack makes the agent yelp, punch-the-boss
-  toy style: a quiet "ugh" at first, escalating to "No!" and full screams
-  on rapid hits. Real human recordings (CC0), and you can drop in your own — see
-  [sounds/whimpers/README.md](sounds/whimpers/README.md). On by default;
-  untick it before screen-sharing.
+- **Agent whimpers** — each whip crack makes the agent shout in pain,
+  punch-the-boss toy style, louder on rapid hits. Drop in your own
+  recordings — see [sounds/whimpers/README.md](sounds/whimpers/README.md).
+  On by default; untick it before screen-sharing.
 
 Choices are saved to `~/.agent-wrangler/config.json`. Environment variables,
 if set when launching, override the saved values:

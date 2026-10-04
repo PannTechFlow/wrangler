@@ -13,20 +13,9 @@ Clips are named by intensity (`.mp3`, `.wav`, `.m4a` or `.ogg`):
 
 Hits less than 2.5 s apart escalate; pause and it calms back down to `1-`.
 A missing level falls back to the next quieter one. Clips are picked up
-without restarting, so you can add your own recordings (e.g. a begged
-"please, mercy!") alongside or instead of these.
+without restarting, so you can add your own recordings alongside or
+instead of these.
 
 ## Credits
 
-The bundled clips (`*-hurt-*`, `*-no-*`, `*-scream-*`) are from
-["Voice Clip Pack - Male Adventurer RPG"](https://opengameart.org/content/voice-clip-pack-male-adventurer-rpg)
-by Brandon Song (wolfwoot), released under
-[CC0](https://creativecommons.org/publicdomain/zero/1.0/), re-encoded to AAC
-and sorted by intensity.
-
-The `*-ouch-*` and `*-ow-*` clips are cut from
-["BHD-Ouch"](https://freesound.org/s/843447/) and
-["Ow.wav"](https://freesound.org/s/362335/) by balloonhead on Freesound,
-released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
-
-The `*-me-*` clips are the project author's own recordings.
+The bundled `*-me-*` clips are the project author's own recordings.
