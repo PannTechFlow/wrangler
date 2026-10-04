@@ -17,6 +17,14 @@ even have to reach for the tray.
   <img src="docs/screenshot-pat.png" alt="Pat mode: a hand with floating hearts and sparkles after a pat, pat counter in the corner" width="49%">
 </p>
 
+### See it in action
+
+<a href="https://www.tiktok.com/@codewithpann/video/7688183854959545621">
+  <img src="docs/tiktok.png" alt="TikTok video: POV: Claude took too long to respond, so I built a response accelerator. The whip cracking over a terminal running Claude Code" width="280">
+</a>
+
+▶ [Watch the demo on TikTok](https://www.tiktok.com/@codewithpann/video/7688183854959545621) (112K+ likes)
+
 ## Features
 
 - **Physics-based whip** — a 36-link verlet-simulated rope with real bend
