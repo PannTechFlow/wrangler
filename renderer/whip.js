@@ -199,6 +199,7 @@ function updateWhip() {
     if (now - whipSpawnTime >= P.firstCrackGraceMs && now - lastCrackTime > P.crackCooldownMs) {
       lastCrackTime = now;
       playCrackSound();
+      window.bridge.whipHit();
       crackFx(tip.x, tip.y, tip.x - tip.px, tip.y - tip.py);
     }
   }
@@ -218,6 +219,7 @@ function strike() {
   const tip = whip[whip.length - 1];
   lastCrackTime = Date.now();
   playCrackSound();
+  window.bridge.whipHit();
   crackFx(tip.x, tip.y, tip.x - tip.px || 1, tip.y - tip.py);
   window.bridge.whipCrack();
 }

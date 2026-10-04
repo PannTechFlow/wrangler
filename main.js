@@ -206,10 +206,18 @@ function pollClaudeStatus() {
 ipcMain.on('hide-overlay', () => overlay?.hide());
 ipcMain.on('mode-changed', (_e, mode) => { lastKind = mode === 'pat' ? 'pat' : 'whip'; });
 
+// Every crack is a hit the agent reacts to, even ones that send no keystrokes.
+function sendWhimper(kind) {
+  if (!config.voice) return;
+  const clip = kind === 'whip' ? nextHitClip() : null;
+  overlay?.webContents.send('whimper', { line: randomWhimper(kind), clip });
+}
+
+ipcMain.on('whip-hit', () => sendWhimper('whip'));
+
 ipcMain.on('whip-crack', () => {
   const phrase = randomWhipPhrase();
-  const whimper = config.voice ? { line: randomWhimper('whip'), clip: nextHitClip() } : null;
-  overlay?.webContents.send('crack-phrase', phrase, 'whip', whimper);
+  overlay?.webContents.send('crack-phrase', phrase, 'whip');
   try {
     sendText(phrase, { interrupt: true });
   } catch (err) {
@@ -219,8 +227,8 @@ ipcMain.on('whip-crack', () => {
 
 ipcMain.on('hand-pat', () => {
   const phrase = randomKindPhrase();
-  const whimper = config.voice ? { line: randomWhimper('pat'), clip: null } : null;
-  overlay?.webContents.send('crack-phrase', phrase, 'pat', whimper);
+  overlay?.webContents.send('crack-phrase', phrase, 'pat');
+  sendWhimper('pat');
   try {
     sendText(phrase, { interrupt: false });
   } catch (err) {
