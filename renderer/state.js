@@ -128,6 +128,22 @@ function playCrackSound() {
   new Audio(src).play().catch(() => {});
 }
 
+// The agent's reaction, in a whisper where the OS has one (macOS "Whisper").
+// Delayed so the crack lands first; cancels any line still playing.
+window.speechSynthesis?.getVoices(); // voices load lazily; warm the list up
+function speakWhimper(text) {
+  if (!text || !window.speechSynthesis) return;
+  setTimeout(() => {
+    const u = new SpeechSynthesisUtterance(text);
+    u.voice = speechSynthesis.getVoices().find((v) => /whisper/i.test(v.name)) || null;
+    u.volume = 0.7;
+    u.rate = 1.1;
+    u.pitch = u.voice ? 1 : 0.8;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }, 150);
+}
+
 // ══════════════════════════════════════════════════════════════════════════
 //  Math / geometry helpers
 // ══════════════════════════════════════════════════════════════════════════

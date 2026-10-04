@@ -246,6 +246,10 @@ Right-click the tray icon:
   badge keeps working either way).
 - **Slow after** — how long a prompt must be running before the whip
   auto-spawns: 10s, 20s (default), 30s, 1 min or 2 min.
+- **Agent whimpers** — after each strike or pat the agent mutters a reaction
+  out loud ("Not the context window!"), punch-the-boss-toy style. Uses the
+  system's text-to-speech (macOS's "Whisper" voice when installed). On by
+  default; untick it before screen-sharing.
 - **Open at login** — installer builds on macOS/Windows.
 
 Choices are saved to `~/.agent-wrangler/config.json`. Environment variables,

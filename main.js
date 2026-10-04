@@ -5,7 +5,7 @@ const fs = require('fs');
 const os = require('os');
 
 const { sendText, refocusPreviousApp } = require('./src/keystroke');
-const { randomWhipPhrase, randomKindPhrase } = require('./src/phrases');
+const { randomWhipPhrase, randomKindPhrase, randomWhimper } = require('./src/phrases');
 const { loadConfig, saveConfig } = require('./src/config');
 
 const TOGGLE_SHORTCUT = 'Alt+Shift+W';
@@ -207,7 +207,7 @@ ipcMain.on('mode-changed', (_e, mode) => { lastKind = mode === 'pat' ? 'pat' : '
 
 ipcMain.on('whip-crack', () => {
   const phrase = randomWhipPhrase();
-  overlay?.webContents.send('crack-phrase', phrase, 'whip');
+  overlay?.webContents.send('crack-phrase', phrase, 'whip', config.voice ? randomWhimper('whip') : null);
   try {
     sendText(phrase, { interrupt: true });
   } catch (err) {
@@ -217,7 +217,7 @@ ipcMain.on('whip-crack', () => {
 
 ipcMain.on('hand-pat', () => {
   const phrase = randomKindPhrase();
-  overlay?.webContents.send('crack-phrase', phrase, 'pat');
+  overlay?.webContents.send('crack-phrase', phrase, 'pat', config.voice ? randomWhimper('pat') : null);
   try {
     sendText(phrase, { interrupt: false });
   } catch (err) {
@@ -254,6 +254,12 @@ function buildTrayMenu() {
         checked: config.slowThresholdMs === ms,
         click: () => setConfig({ slowThresholdMs: ms }),
       })),
+    },
+    {
+      label: 'Agent whimpers',
+      type: 'checkbox',
+      checked: config.voice,
+      click: (item) => setConfig({ voice: item.checked }),
     },
     {
       label: 'Open at login',

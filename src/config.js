@@ -14,6 +14,7 @@ const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 const DEFAULTS = {
   autoTrigger: true,
   slowThresholdMs: 20000,
+  voice: true,
 };
 
 function readFile() {
