@@ -23,3 +23,8 @@ The bundled clips (`*-hurt-*`, `*-no-*`, `*-scream-*`) are from
 by Brandon Song (wolfwoot), released under
 [CC0](https://creativecommons.org/publicdomain/zero/1.0/), re-encoded to AAC
 and sorted by intensity.
+
+The `*-ouch-*` and `*-ow-*` clips are cut from
+["BHD-Ouch"](https://freesound.org/s/843447/) and
+["Ow.wav"](https://freesound.org/s/362335/) by balloonhead on Freesound,
+released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
