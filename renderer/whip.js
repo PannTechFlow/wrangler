@@ -199,6 +199,7 @@ function updateWhip() {
     if (now - whipSpawnTime >= P.firstCrackGraceMs && now - lastCrackTime > P.crackCooldownMs) {
       lastCrackTime = now;
       playCrackSound();
+      window.bridge.whipHit();
       crackFx(tip.x, tip.y, tip.x - tip.px, tip.y - tip.py);
     }
   }
@@ -218,6 +219,7 @@ function strike() {
   const tip = whip[whip.length - 1];
   lastCrackTime = Date.now();
   playCrackSound();
+  window.bridge.whipHit();
   crackFx(tip.x, tip.y, tip.x - tip.px || 1, tip.y - tip.py);
   window.bridge.whipCrack();
 }
@@ -313,8 +315,10 @@ function drawFx() {
     ctx.save();
     ctx.globalAlpha = Math.min(1, (1 - age) * 2);
     ctx.translate(W / 2, H * 0.18 - age * 30);
-    ctx.scale(pop, pop);
     ctx.font = '900 72px -apple-system, Segoe UI, sans-serif';
+    // Shrink long phrases to fit the screen width.
+    const fit = Math.min(1, (W * 0.9) / (ctx.measureText(phrase.text).width + 14));
+    ctx.scale(pop * fit, pop * fit);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.lineJoin = 'round';

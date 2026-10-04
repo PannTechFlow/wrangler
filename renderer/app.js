@@ -69,6 +69,7 @@ window.bridge.onDropWhip(() => {
   if (whip && !dropping) dropping = true;
 });
 window.bridge.onCrackPhrase((text, kind) => { phrase = { text, kind: kind || 'whip', t: Date.now() }; });
+window.bridge.onWhimper(playWhimper);
 
 // ── Update / draw ───────────────────────────────────────────────────────
 function update() {

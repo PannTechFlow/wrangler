@@ -6,6 +6,7 @@ const os = require('os');
 
 const { sendText, refocusPreviousApp } = require('./src/keystroke');
 const { randomWhipPhrase, randomKindPhrase } = require('./src/phrases');
+const { nextHitClip } = require('./src/whimpers');
 const { loadConfig, saveConfig } = require('./src/config');
 
 const TOGGLE_SHORTCUT = 'Alt+Shift+W';
@@ -205,6 +206,14 @@ function pollClaudeStatus() {
 ipcMain.on('hide-overlay', () => overlay?.hide());
 ipcMain.on('mode-changed', (_e, mode) => { lastKind = mode === 'pat' ? 'pat' : 'whip'; });
 
+// Every crack is a hit: a shout and a banner, even when no keystrokes are
+// sent. A click strike then replaces the banner with the phrase it types.
+ipcMain.on('whip-hit', () => {
+  overlay?.webContents.send('crack-phrase', randomWhipPhrase(), 'whip');
+  const clip = config.voice ? nextHitClip() : null;
+  if (clip) overlay?.webContents.send('whimper', clip);
+});
+
 ipcMain.on('whip-crack', () => {
   const phrase = randomWhipPhrase();
   overlay?.webContents.send('crack-phrase', phrase, 'whip');
@@ -254,6 +263,12 @@ function buildTrayMenu() {
         checked: config.slowThresholdMs === ms,
         click: () => setConfig({ slowThresholdMs: ms }),
       })),
+    },
+    {
+      label: 'Agent whimpers',
+      type: 'checkbox',
+      checked: config.voice,
+      click: (item) => setConfig({ voice: item.checked }),
     },
     {
       label: 'Open at login',

@@ -128,6 +128,24 @@ function playCrackSound() {
   new Audio(src).play().catch(() => {});
 }
 
+// The agent's reaction to a hit: a human pain clip from sounds/whimpers/,
+// quieter at level 1-, full volume at 3-. A new hit cuts off the last one.
+const WHIMPER_VOLUME = { 1: 0.5, 2: 0.8, 3: 1 };
+let whimperClip = null;
+let whimperTimer = null;
+
+function playWhimper(clip) {
+  clearTimeout(whimperTimer);
+  whimperClip?.pause();
+  const level = (clip.match(/\/([123])-[^/]*$/) || [])[1];
+  // Short delay so the crack lands first.
+  whimperTimer = setTimeout(() => {
+    whimperClip = new Audio(clip);
+    whimperClip.volume = WHIMPER_VOLUME[level] ?? 1;
+    whimperClip.play().catch(() => {});
+  }, 120);
+}
+
 // ══════════════════════════════════════════════════════════════════════════
 //  Math / geometry helpers
 // ══════════════════════════════════════════════════════════════════════════

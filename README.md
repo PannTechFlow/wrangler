@@ -246,7 +246,10 @@ Right-click the tray icon:
   badge keeps working either way).
 - **Slow after** — how long a prompt must be running before the whip
   auto-spawns: 10s, 20s (default), 30s, 1 min or 2 min.
-- **Open at login** — installer builds on macOS/Windows.
+- **Agent whimpers** — each whip crack makes the agent shout in pain,
+  punch-the-boss toy style, louder on rapid hits. Drop in your own
+  recordings — see [sounds/whimpers/README.md](sounds/whimpers/README.md).
+  On by default; untick it before screen-sharing.
 
 Choices are saved to `~/.agent-wrangler/config.json`. Environment variables,
 if set when launching, override the saved values:
@@ -298,6 +301,7 @@ src/
   keystroke.js         Cross-platform Ctrl-C + type-text automation
   phrases.js            Whip / kind-word phrase lists
   config.js             Tray-menu settings, saved to ~/.agent-wrangler/config.json
+  whimpers.js           Picks a hit-reaction clip from sounds/whimpers/, escalating
   hooks.js              `agentwrangler install-hooks` / `uninstall-hooks`
   mac-app.js             Builds the Wrangler.app wrapper on macOS
 bin/wrangler.js       CLI launcher
