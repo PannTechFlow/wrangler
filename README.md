@@ -329,6 +329,20 @@ Issues and pull requests are welcome. It's a small, single-purpose Electron
 app — no build step for the renderer (plain `<script>` tags, no bundler), so
 `npm start` after a clone is the whole dev loop.
 
+Not sure where to start? Pick up a
+[good first issue](https://github.com/PannTechFlow/wrangler/labels/good%20first%20issue),
+or share ideas and setups in
+[Discussions](https://github.com/PannTechFlow/wrangler/discussions).
+
+## Author
+
+Built by **Pann**. Follow along for more dev-tool experiments:
+
+- TikTok: [@codewithpann](https://www.tiktok.com/@codewithpann)
+- GitHub: [@PannTechFlow](https://github.com/PannTechFlow)
+
+Open to collaborating on dev tools and AI-agent tooling. Reach out!
+
 ## Credits
 
 This is an independent rebuild of the whip/interrupt idea from
