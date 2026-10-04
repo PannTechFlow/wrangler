@@ -28,3 +28,5 @@ The `*-ouch-*` and `*-ow-*` clips are cut from
 ["BHD-Ouch"](https://freesound.org/s/843447/) and
 ["Ow.wav"](https://freesound.org/s/362335/) by balloonhead on Freesound,
 released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
+
+The `*-me-*` clips are the project author's own recordings.
