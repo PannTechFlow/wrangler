@@ -247,8 +247,8 @@ Right-click the tray icon:
 - **Slow after** — how long a prompt must be running before the whip
   auto-spawns: 10s, 20s (default), 30s, 1 min or 2 min.
 - **Agent whimpers** — each whip crack makes the agent yelp, punch-the-boss
-  toy style: a quiet "ugh" at first, escalating to a full scream on rapid
-  hits. Real human recordings (CC0), and you can drop in your own — see
+  toy style: a quiet "ugh" at first, escalating to "No!" and full screams
+  on rapid hits. Real human recordings (CC0), and you can drop in your own — see
   [sounds/whimpers/README.md](sounds/whimpers/README.md). On by default;
   untick it before screen-sharing.
 

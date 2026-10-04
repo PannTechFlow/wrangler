@@ -18,7 +18,8 @@ without restarting, so you can add your own recordings (e.g. a begged
 
 ## Credits
 
-The bundled `*-ugh-*.m4a` clips are
-["15 vocal male strain/hurt/pain/jump sounds"](https://opengameart.org/content/15-vocal-male-strainhurtpainjump-sounds)
-by qubodup, released under [CC0](https://creativecommons.org/publicdomain/zero/1.0/),
-re-encoded to AAC and sorted by loudness.
+The bundled clips (`*-hurt-*`, `*-no-*`, `*-scream-*`) are from
+["Voice Clip Pack - Male Adventurer RPG"](https://opengameart.org/content/voice-clip-pack-male-adventurer-rpg)
+by Brandon Song (wolfwoot), released under
+[CC0](https://creativecommons.org/publicdomain/zero/1.0/), re-encoded to AAC
+and sorted by intensity.
