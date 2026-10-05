@@ -68,24 +68,31 @@ async function getTrayIcon() {
 }
 
 /**
- * Loads the busy/done badge variants for the ambient tray status (a colored
- * dot composited onto Template.png at build time — see icon/Tray-Busy.png,
- * icon/Tray-Done.png). Skipped on win32, whose tray icon (icon.ico) is a
- * different base image the badge wouldn't align with.
+ * Loads the busy/done badge variants for the ambient tray status.
+ * macOS/Linux use the PNG variants based on Template.png, while Windows
+ * uses ICO variants based on the Windows icon.ico.
  */
 function loadTrayStatusIcons(idleIcon) {
-  if (process.platform === 'win32') return null;
-  const busyPath = path.join(__dirname, 'icon', 'Tray-Busy.png');
-  const donePath = path.join(__dirname, 'icon', 'Tray-Done.png');
+  const extension = process.platform === 'win32' ? 'ico' : 'png';
+
+  const busyPath = path.join(__dirname, 'icon', `Tray-Busy.${extension}`);
+  const donePath = path.join(__dirname, 'icon', `Tray-Done.${extension}`);
+
   if (!fs.existsSync(busyPath) || !fs.existsSync(donePath)) return null;
+
   let busy = nativeImage.createFromPath(busyPath);
   let done = nativeImage.createFromPath(donePath);
+
+  if (busy.isEmpty() || done.isEmpty()) return null;
+
   if (process.platform === 'darwin') {
     busy = busy.resize({ width: 18, height: 18 });
     done = done.resize({ width: 18, height: 18 });
   }
+
   return { idle: idleIcon, busy, done };
 }
+
 
 /** Switches the tray icon between idle/busy/done, skipping redundant updates. */
 function setTrayStatus(kind) {
